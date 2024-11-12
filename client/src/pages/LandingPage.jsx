@@ -1,5 +1,6 @@
 import backgroundImage from "../assets/landingImage.jpg";
 import Login from "../components/Login";
+import Register from "../components/Register";
 
 function LandingPage() {
   const styles = {
@@ -17,6 +18,7 @@ function LandingPage() {
       <div style={styles} className="container"></div>
       <div className="">
         <Login />
+        <Register />
       </div>
     </>
   );

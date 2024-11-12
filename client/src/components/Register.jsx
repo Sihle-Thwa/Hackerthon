@@ -1,15 +1,15 @@
 function Register() {
   return (
     <div className="d-flex justify-content-center">
-      <div className="card w-auto">
+      <div className="card w-50">
         <div className="card-body">
           <div className="card-title justify-content-between d-flex">
-            <h1>Welcome Back!</h1>
+            <h1>Register Now</h1>
             <p className="text">
-              New user?{" "}
+              {" "}
               <span>
                 {" "}
-                <a href="#">Create an account</a>
+                <a href="#">Log in to your account</a>
               </span>
             </p>
           </div>
@@ -29,11 +29,22 @@ function Register() {
                 className="form-control"
                 id="InputPassword1"
               />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="InputPassword1" className="form-label">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                className="form-control"
+                id="InputPassword1"
+              />
+            </div>
+            <div>
               <div className="m-3 justify-content-between d-flex">
-                <a href="#" className="text ">
-                  Forgot Password?
-                </a>
-                <button className="btn btn-primary">Sign In</button>
+                <a href="#" className="text "></a>
+                <button className="btn btn-primary">Register</button>
               </div>
             </div>
           </form>
@@ -44,7 +55,7 @@ function Register() {
           </div>
           <div className="btn btn-light">
             <i className="bi bi-google"></i>
-            <span>Sign in with Google</span>
+            <span>Register with Google</span>
           </div>
         </div>
       </div>

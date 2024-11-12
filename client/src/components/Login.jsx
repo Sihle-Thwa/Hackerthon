@@ -2,8 +2,8 @@ import "../styles/landingPage.css";
 
 function Login() {
   return (
-    <div className="d-flex justify-content-center">
-      <div className="card w-auto">
+    <div className="d-flex justify-content-center top-50">
+      <div className="card w-50">
         <div className="card-body">
           <div className="card-title justify-content-between d-flex">
             <h1>Welcome Back!</h1>

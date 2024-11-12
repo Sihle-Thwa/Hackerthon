@@ -5,21 +5,22 @@
     align-items: center;
     margin: 1rem 0;
 
-    &-line {
-        flex: auto;
-        flex-basis: auto;
-        border: none;
-        outline: none;
-        height: 2px;
-        background: gray;
-    }
+}
 
-    &-text {
-        font-family: inherit;
-        font-size: 1rem;
-        font-weight: 500;
-        line-height: inherit;
-        color: black;
-        margin: 0 1rem;
-    }
+.stripped-line {
+    flex: auto;
+    flex-basis: auto;
+    border: 1px solid black;
+    outline:none;
+    height: 2px;
+    background: gray;
+}
+
+.stripped-text {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: inherit;
+    color: black;
+    margin: 0 1rem;
 }
