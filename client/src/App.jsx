@@ -4,8 +4,13 @@ import Auth0ProviderWithNavigate from "./auth0providerwithnavigate"; // Adjust t
 import TopNav from "./components/TopNav";
 import Dashboard from "./components/Dashboard";
 import Wishlist from "./pages/Wishlist";
+import { useState } from "react";
 
 function App() {
+  const [wishlist, setWishlist] = useState(() => {
+    const savedWishlist = localStorage.getItem("wishlist");
+    return savedWishlist ? JSON.parse(savedWishlist) : [];
+  });
   return (
     <div className="app">
       <nav>
@@ -13,10 +18,11 @@ function App() {
       </nav>
       <div className="container">
         <Routes>
-          {/* Set LandingPage as the default route */}
-
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/wishlist" element={<Wishlist />} />
+          <Route
+            path="/wishlist"
+            element={<Wishlist wishlist={wishlist} setWishlist={setWishlist} />}
+          />
         </Routes>
       </div>
     </div>
