@@ -1,0 +1,33 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: whitesmoke;
+    padding: 1rem;
+    border-bottom: 1px solid black;
+}
+
+.navbar-left .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.navbar-center .nav-links {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-center .nav-link{
+    margin-right: 1rem !important;
+}
+
+.navbar-right{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    margin-left: 1rem;
+    position: relative;
+}
