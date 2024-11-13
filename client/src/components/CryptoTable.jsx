@@ -1,68 +1,138 @@
-import { useEffect, useState } from "react";
-import { fetchCoins } from "../services/api"; // Ensure this function is defined and returns the expected data structure
+import { useEffect, useState, useCallback, useMemo } from "react";
+import PropTypes from "prop-types";
+import { fetchCoins } from "../services/api";
+
+const CurrencyRow = ({ currency, isInWishlist, toggleWishlist }) => (
+  <tr key={currency.id}>
+    <td>{currency.market_cap_rank}</td>
+    <td>{currency.name}</td>
+    <td>R{currency.current_price.toFixed(2)}</td>
+    <td
+      style={{
+        color: currency.price_change_percentage_24h >= 0 ? "green" : "red",
+      }}
+    >
+      {currency.price_change_percentage_24h
+        ? currency.price_change_percentage_24h.toFixed(2)
+        : "N/A"}
+      %
+    </td>
+    <td>R{currency.high_24h ? currency.high_24h.toFixed(2) : "N/A"}</td>
+    <td>R{currency.market_cap.toLocaleString()}</td>
+    <td>
+      <span>
+        <i
+          className={`bi bi-star ${
+            isInWishlist ? "text-danger" : "text-white"
+          }`}
+          onClick={toggleWishlist}
+          style={{ cursor: "pointer" }}
+        ></i>
+      </span>
+    </td>
+  </tr>
+);
+
+CurrencyRow.propTypes = {
+  currency: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    market_cap_rank: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    current_price: PropTypes.number.isRequired,
+    price_change_percentage_24h: PropTypes.number,
+    high_24h: PropTypes.number,
+    market_cap: PropTypes.number.isRequired,
+  }).isRequired,
+  isInWishlist: PropTypes.bool.isRequired,
+  toggleWishlist: PropTypes.func.isRequired,
+};
+
+const Pagination = ({ currentPage, totalPages, onPageChange }) => (
+  <div className="pagination pagination-sm justify-content-end">
+    <button
+      className="btn btn-outline-primary"
+      onClick={() => onPageChange(currentPage - 1)}
+      disabled={currentPage === 0}
+    >
+      <i className="bi bi-arrow-left"></i>
+    </button>
+
+    {[...Array(totalPages)].map((_, index) => (
+      <button
+        key={index}
+        className="btn btn-outline-light"
+        onClick={() => onPageChange(index)}
+      >
+        {index + 1}
+      </button>
+    ))}
+
+    <button
+      className="btn btn-outline-primary"
+      onClick={() => onPageChange(currentPage + 1)}
+      disabled={currentPage === totalPages - 1}
+    >
+      <i className="bi bi-arrow-right"></i>
+    </button>
+  </div>
+);
+
+Pagination.propTypes = {
+  currentPage: PropTypes.number.isRequired,
+  totalPages: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+};
 
 const CryptoTable = ({ wishlist, setWishlist }) => {
   const [currencies, setCurrencies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const coinsPerPage = 10; // Limit to 10 coins per page
-  const [iconClicked, setIconClicked] = useState([]);
+  const coinsPerPage = 10;
 
-  useEffect(() => {
-    const getCoins = async () => {
-      try {
-        const coins = await fetchCoins();
-
-        // Check if the coins data is an array
-        if (Array.isArray(coins)) {
-          setCurrencies(coins);
-          setIconClicked(new Array(coins.length).fill(false)); // Initialize iconClicked based on currencies length
-        } else {
-          throw new Error("Coins data is not an array");
-        }
-      } catch (error) {
-        setError(error.message || "Failed to load coins");
-      } finally {
-        setLoading(false);
+  const fetchCurrencyData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const coins = await fetchCoins();
+      if (!Array.isArray(coins)) {
+        throw new Error("Coins data is not an array");
       }
-    };
-
-    getCoins();
+      setCurrencies(coins);
+    } catch (error) {
+      setError(error.message || "Failed to load coins");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-  if (error) {
-    return <div>{error}</div>;
-  }
+  useEffect(() => {
+    fetchCurrencyData();
+  }, [fetchCurrencyData]);
 
-  // Calculate the current coins to display based on the current page
-  const startIndex = currentPage * coinsPerPage;
-  const selectedCurrencies = currencies.slice(
-    startIndex,
-    startIndex + coinsPerPage
-  );
   const totalPages = Math.ceil(currencies.length / coinsPerPage);
+  const selectedCurrencies = useMemo(() => {
+    const startIndex = currentPage * coinsPerPage;
+    return currencies.slice(startIndex, startIndex + coinsPerPage);
+  }, [currencies, currentPage, coinsPerPage]);
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages - 1) {
-      setCurrentPage(currentPage + 1);
+  const toggleWishlist = (currencyId) => {
+    setWishlist((prev) => {
+      const updatedWishlist = prev.includes(currencyId)
+        ? prev.filter((id) => id !== currencyId)
+        : [...prev, currencyId];
+      localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+      return updatedWishlist;
+    });
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 0 && newPage < totalPages) {
+      setCurrentPage(newPage);
     }
   };
 
-  const handlePreviousPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handlePageClick = (page) => {
-    if (page >= 0 && page < totalPages) {
-      setCurrentPage(page);
-    }
-  };
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="card shadow">
@@ -97,111 +167,31 @@ const CryptoTable = ({ wishlist, setWishlist }) => {
             </tr>
           </thead>
           <tbody>
-            {selectedCurrencies.map((currency, index) => (
-              <tr key={currency.id}>
-                <td>{currency.market_cap_rank}</td>
-                <td>{currency.name}</td>
-                <td>R{currency.current_price.toFixed(2)}</td>
-                <td
-                  style={{
-                    color:
-                      currency.price_change_percentage_24h >= 0
-                        ? "green"
-                        : "red",
-                  }}
-                >
-                  {currency.price_change_percentage_24h
-                    ? currency.price_change_percentage_24h.toFixed(2)
-                    : "N/A"}
-                  %
-                </td>
-                <td>
-                  R{currency.high_24h ? currency.high_24h.toFixed(2) : "N/A"}
-                </td>
-                <td>R{currency.market_cap.toLocaleString()}</td>
-                <td>
-                  <span>
-                    <i
-                      className="bi bi-star"
-                      onClick={() => {
-                        const isInWishlist = wishlist.includes(currency.id);
-                        if (isInWishlist) {
-                          setWishlist((prev) => {
-                            const updatedWishlist = prev.filter(
-                              (id) => id !== currency.id
-                            );
-                            localStorage.setItem(
-                              "wishlist",
-                              JSON.stringify(updatedWishlist)
-                            );
-                            return updatedWishlist;
-                          });
-                        } else {
-                          setWishlist((prev) => {
-                            const updatedWishlist = [...prev, currency.id];
-                            localStorage.setItem(
-                              "wishlist",
-                              JSON.stringify(updatedWishlist)
-                            );
-                            return updatedWishlist;
-                          });
-                        }
-                      }}
-                      style={{
-                        color: wishlist.includes(currency.id) ? "red" : "white",
-                        cursor: "pointer",
-                      }}
-                    ></i>
-                  </span>
-                </td>
-              </tr>
+            {selectedCurrencies.map((currency) => (
+              <CurrencyRow
+                key={currency.id}
+                currency={currency}
+                isInWishlist={wishlist.includes(currency.id)}
+                toggleWishlist={() => toggleWishlist(currency.id)}
+              />
             ))}
           </tbody>
         </table>
       </div>
       <div className="card-footer">
-        <div className="pagination pagination-sm justify-content-end">
-          <button
-            className="btn btn-outline-primary"
-            onClick={handlePreviousPage}
-            disabled={currentPage === 0}
-          >
-            <i
-              className="bi bi-arrow-left"
-              style={{ color: "white", outlineColor: "invert" }}
-            ></i>
-          </button>
-
-          {/* Render page buttons */}
-          {[0, 1, 2].map((offset) => {
-            const page = currentPage + offset;
-            return (
-              page < totalPages && (
-                <button
-                  key={page}
-                  className="btn btn-outline-light"
-                  onClick={() => handlePageClick(page)}
-                >
-                  {page + 1}
-                </button>
-              )
-            );
-          })}
-
-          <button
-            className="btn btn-outline-primary"
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages - 1}
-          >
-            <i
-              className="bi bi-arrow-right"
-              style={{ color: "white", outlineColor: "invert" }}
-            ></i>
-          </button>
-        </div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </div>
     </div>
   );
+};
+
+CryptoTable.propTypes = {
+  wishlist: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setWishlist: PropTypes.func.isRequired,
 };
 
 export default CryptoTable;

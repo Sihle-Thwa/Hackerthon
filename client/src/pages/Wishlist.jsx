@@ -1,3 +1,5 @@
+import PropTypes from "prop-types"; // Import PropTypes
+
 const Wishlist = ({ wishlist, setWishlist }) => {
   const handleRemoveFromWishlist = (currencyId) => {
     const updatedWishlist = wishlist.filter((id) => id !== currencyId);
@@ -35,5 +37,8 @@ const Wishlist = ({ wishlist, setWishlist }) => {
     </div>
   );
 };
-
+Wishlist.propTypes = {
+  wishlist: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setWishlist: PropTypes.func.isRequired,
+};
 export default Wishlist;

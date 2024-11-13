@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { topCurrencies as fetchTopCurrencies } from "../api/api"; // Renamed to avoid conflict
-import "../styles/widget.css";
+import { topCurrencies as fetchTopCurrencies } from "../services/api"; // Renamed to avoid conflict
 
 const TopCurrencies = () => {
   const [currencies, setCurrencies] = useState([]); // Renamed state for clarity

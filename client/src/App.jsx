@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route } from "react-router-dom";
 import Auth0ProviderWithNavigate from "./auth0providerwithnavigate"; // Adjust the path as necessary
 import TopNav from "./components/TopNav";
