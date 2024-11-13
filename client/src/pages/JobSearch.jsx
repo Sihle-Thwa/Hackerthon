@@ -1,5 +1,5 @@
 function JobSearch() {
-  return <div>JobSearch</div>;
+  return <div className="container">JobSearch</div>;
 }
 
 export default JobSearch;
