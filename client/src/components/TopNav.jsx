@@ -10,25 +10,21 @@ function TopNav() {
   return (
     <nav className="navbar" role="navigation">
       <div className="navbar-left">
-        <a href="/home" className="navbar-brand">
-          Jobs4You
+        <a href="/dashboard" className="navbar-brand">
+          CryptoBuddy
         </a>
       </div>
       <div className="navbar-center">
         <ul className="nav-links">
           <li>
-            <a href="/jobsearch" className="nav-link">
-              Home
+            <a href="/dashboard" className="nav-link">
+              Dashboard
             </a>
           </li>
+
           <li>
-            <a href="/resume" className="nav-link">
-              Resume
-            </a>
-          </li>
-          <li>
-            <a href="/profile" className="nav-link">
-              Profile
+            <a href="/wishlist" className="nav-link">
+              Wishlist
             </a>
           </li>
         </ul>
