@@ -14,7 +14,7 @@ export const LoginButton = () => {
 
   return (
     <button className="button__login" onClick={handleLogin}>
-      Log In
+      <i className="bi bi-box-arrow-left"></i>
     </button>
   );
 };
