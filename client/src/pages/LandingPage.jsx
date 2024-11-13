@@ -1,27 +1,29 @@
-import backgroundImage from "../assets/landingImage.jpg";
-import Login from "../components/Login";
-import Register from "../components/Register";
+// LandingPage.js
+import { useAuth0 } from "@auth0/auth0-react";
 
-function LandingPage() {
-  const styles = {
-    backgroundImage: `url(${backgroundImage})`,
-    height: "90vh",
-    position: "absolute",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    filter: "blur(3px)",
-    paddingLeft: "0px",
+const LandingPage = () => {
+  const { loginWithRedirect } = useAuth0();
+
+  const handleLogin = () => {
+    loginWithRedirect();
+  };
+
+  const handleSignUp = () => {
+    loginWithRedirect({ screen_hint: "signup" }); // This will prompt the signup screen
   };
 
   return (
-    <>
-      <div style={styles} className="container"></div>
-      <div className="">
-        <Login />
-        <Register />
-      </div>
-    </>
+    <div className="landing-page">
+      <h1>Welcome to Jobs4You</h1>
+      <p>Your one-stop solution for job searching and resume building.</p>
+      <button onClick={handleLogin} className="button__login">
+        Log In
+      </button>
+      <button onClick={handleSignUp} className="button__signup">
+        Sign Up
+      </button>
+    </div>
   );
-}
+};
 
 export default LandingPage;
