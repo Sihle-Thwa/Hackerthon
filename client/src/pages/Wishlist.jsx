@@ -1,14 +1,16 @@
 import PropTypes from "prop-types"; // Import PropTypes
+import Recommendations from "../components/Recommendations";
 
 const Wishlist = ({ wishlist, setWishlist }) => {
   const handleRemoveFromWishlist = (currencyId) => {
     const updatedWishlist = wishlist.filter((id) => id !== currencyId);
     setWishlist(updatedWishlist);
-    localStorage.setItem("wishlist", JSON.stringify(updatedWishlist)); // Update localStorage
+    localStorage.setItem("wishlist", JSON.stringify(updatedWishlist)); // Update localStorage with items from wishlist
   };
 
   return (
     <div className="container">
+      <div className="row">
       <div className="card">
         <div className="card-title">
           <h3>Your Wishlist</h3>
@@ -33,6 +35,12 @@ const Wishlist = ({ wishlist, setWishlist }) => {
             </ul>
           )}
         </div>
+      </div>
+      
+      </div>
+      <div className="row ">
+        <h2> Content Recommendations</h2>
+        <Recommendations />
       </div>
     </div>
   );
