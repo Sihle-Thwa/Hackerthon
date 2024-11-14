@@ -3,5 +3,79 @@
   margin: 0 auto;
   padding: 1rem;
   color: black !important;
+  
 }
 
+.app {
+  background-color: whitesmoke !important;
+}
+
+.widget-chart {
+  padding: 1rem !important;
+  position: relative;
+}
+
+.widget-chart .text-left .widget-chart-content {
+  display: flex !important;
+  flex-direction: column !important;
+  align-content: center;
+  flex: 1 !important;
+  position: relative;
+}
+
+.icon-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  z-index: 3;
+  opacity: 1;
+  width: 54px;
+  height: 54px;
+  overflow: hidden;
+}
+
+.widget-chart .widget-heading:first-child {
+  margin-top: 0;
+}
+
+.widget-chart .widget-heading {
+  margin: -0.5rem 0 0;
+  display: block;
+}
+.widget-chart .widget-numbers .widget-description {
+  margin-top: -.5rem !important;
+  align-self: flex-start;
+
+}
+
+
+.widget-chart .widget-numbers {
+  font-weight: bold;
+  font-size: 1.5rem;
+  display: block;
+  line-height: 1;
+  margin: 1rem auto;
+}
+
+.widget-chart .widget-description {
+  margin: 1rem 0 0 !important;
+
+  
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(26, 54, 126, 0.125);
+  border-radius: .25rem;
+
+}

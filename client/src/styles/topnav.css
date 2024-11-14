@@ -4,7 +4,8 @@
     align-items: center;
     background-color: whitesmoke;
     padding: 1rem;
-    border-bottom: 1px solid black;
+    padding-top: 0;
+   
 }
 
 .navbar-left .navbar-brand {

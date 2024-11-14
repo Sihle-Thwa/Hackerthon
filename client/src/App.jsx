@@ -1,9 +1,10 @@
 import { Routes, Route } from "react-router-dom";
-import Auth0ProviderWithNavigate from "./auth0providerwithnavigate"; // Adjust the path as necessary
+import Auth0ProviderWithNavigate from "./auth0providerwithnavigate"; // Work on fixing the logging in
 import TopNav from "./components/TopNav";
 import Dashboard from "./components/Dashboard";
 import Wishlist from "./pages/Wishlist";
 import { useState } from "react";
+import "./App.css";
 
 function App() {
   const [wishlist, setWishlist] = useState(() => {
