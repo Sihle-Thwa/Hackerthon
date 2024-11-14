@@ -11,42 +11,44 @@ const Wishlist = ({ wishlist, setWishlist }) => {
   return (
     <div className="container">
       <div className="row">
-      <div className="card">
-        <div className="card-title">
-          <h3>Your Wishlist</h3>
-        </div>
+        <div className="card">
+          <div className="card-title">
+            <h3>Your Wishlist</h3>
+          </div>
 
-        <div className="card-body">
-          {wishlist.length === 0 ? (
-            <p>No currencies in your wishlist.</p>
-          ) : (
-            <ul>
-              {wishlist.map((currencyId) => (
-                <li key={currencyId}>
-                  Currency ID: {currencyId}
-                  <button
-                    className="btn btn-danger btn-sm ms-2"
-                    onClick={() => handleRemoveFromWishlist(currencyId)}
-                  >
-                    <i className="bi bi-trash3"></i>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
+          <div className="card-body">
+            {wishlist.length === 0 ? (
+              <p>No currencies in your wishlist.</p>
+            ) : (
+              <ul>
+                {wishlist.map((currencyId) => (
+                  <li key={currencyId}>
+                    Currency ID: {currencyId}
+                    <button
+                      className="btn btn-danger btn-sm ms-2"
+                      onClick={() => handleRemoveFromWishlist(currencyId)}
+                    >
+                      <i className="bi bi-trash3"></i>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
-      </div>
-      
       </div>
       <div className="row ">
-        <h2> Content Recommendations</h2>
-        <Recommendations />
+        <h2>Content Recommendations</h2>
+        {/* Pass the wishlist to Recommendations component */}
+        <Recommendations wishlist={wishlist} />
       </div>
     </div>
   );
 };
+
 Wishlist.propTypes = {
   wishlist: PropTypes.arrayOf(PropTypes.string).isRequired,
   setWishlist: PropTypes.func.isRequired,
 };
+
 export default Wishlist;
